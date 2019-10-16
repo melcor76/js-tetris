@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Tetris</title>
+  <meta property="og:title" content="JavaScript Tetris" />
+  <meta name="description" content="Tetris game made with JavaScript.">
+  <meta name="twitter:description" content="Tetris game made with Javascript.">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@melcor76" />
+  <meta name="keywords" content="JavaScript, Tetris">
+  <meta name="author" content="Michael Karén">
+ <!-- <link rel="icon" type="image/x-icon" href="favicon.ico">
+ -->  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <script type="text/javascript" src="constants.js"></script>
+  <script type="text/javascript" src="board.js"></script>
+  <script type="text/javascript" src="piece.js"></script>
+</head>
+<html>
+<body>
+
+  <div class="grid">
+      <canvas #board class="game-board"></canvas>
+      <div class="right-column">
+          <div>
+              <h1>TETRIS</h1>
+              <p>Score: <span id="points">0</span></p>
+              <p>Lines: <span id="lines">0</span></p>
+              <p>Level: <span id="level">0</span></p>
+              <canvas #next class="next"></canvas>
+          </div>
+          <button (click)="play()" class="play-button">Play</button>
+      </div>
+  </div>
+
+</body>
+</html>
