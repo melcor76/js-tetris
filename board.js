@@ -1,7 +1,7 @@
+const canvas = document.getElementById("board");
+const canvasNext = document.getElementById("next");
+
 class Board {
-  canvas = document.getElementById("board");
-  canvasNext = document.getElementById("board");
-  ctx = canvas.getContext("2d");
   ctxNext;
   board;
   piece;
@@ -16,31 +16,38 @@ class Board {
     [KEY.RIGHT]: (p) => ({ ...p, x: p.x + 1 }),
     [KEY.DOWN]: (p) => ({ ...p, y: p.y + 1 }),
     [KEY.SPACE]: (p) => ({ ...p, y: p.y + 1 }),
-    [KEY.UP]: (p) => this.service.rotate(p)
+    [KEY.UP]: (p) => this.rotate(p)
   };
 
-  keyEvent(event) {
-    if (event.keyCode === KEY.ESC) {
-      this.gameOver();
-    } else if (this.moves[event.keyCode]) {
-      event.preventDefault();
-      // Get new state
-      let p = this.moves[event.keyCode](this.piece);
-      if (event.keyCode === KEY.SPACE) {
-        // Hard drop
-        while (this.service.valid(p, this.board)) {
-          this.points += POINTS.HARD_DROP;
+  constructor() {
+    this.addEventListener();
+    this.init();
+  }
+
+  addEventListener() {
+    document.addEventListener('keydown', (event) => {
+      if (event.keyCode === KEY.ESC) {
+        this.gameOver();
+      } else if (this.moves[event.keyCode]) {
+        event.preventDefault();
+        // Get new state
+        let p = this.moves[event.keyCode](this.piece);
+        if (event.keyCode === KEY.SPACE) {
+          // Hard drop
+          while (this.valid(p, this.board)) {
+            this.points += POINTS.HARD_DROP;
+            this.piece.move(p);
+            p = this.moves[KEY.DOWN](this.piece);
+          }
+        } else if (this.valid(p, this.board)) {
           this.piece.move(p);
-          p = this.moves[KEY.DOWN](this.piece);
-        }
-      } else if (this.service.valid(p, this.board)) {
-        this.piece.move(p);
-        if (event.keyCode === KEY.DOWN) {
-          this.points += POINTS.SOFT_DROP;
+          if (event.keyCode === KEY.DOWN) {
+            this.points += POINTS.SOFT_DROP;
+          }
         }
       }
-    }
-  } 
+    });
+  }
 
   init() {
     this.initBoard();
@@ -49,7 +56,7 @@ class Board {
   }
 
   initBoard() {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.ctx = canvas.getContext('2d');
 
     // Calculate size of canvas from constants.
     this.ctx.canvas.width = COLS * BLOCK_SIZE;
@@ -60,7 +67,7 @@ class Board {
   }
 
   initNext() {
-    this.ctxNext = this.canvasNext.nativeElement.getContext('2d');
+    this.ctxNext = canvasNext.getContext('2d');
 
     // Calculate size of canvas from constants.
     this.ctxNext.canvas.width = 4 * BLOCK_SIZE;
@@ -113,7 +120,7 @@ class Board {
 
   drop() {
     let p = this.moves[KEY.DOWN](this.piece);
-    if (this.service.valid(p, this.board)) {
+    if (this.valid(p, this.board)) {
       this.piece.move(p);
     } else {
       this.freeze();
@@ -139,7 +146,7 @@ class Board {
       }
     });
     if (lines > 0) {
-      this.points += this.service.getLinesClearedPoints(lines, this.level);
+      this.points += this.getLinesClearedPoints(lines, this.level);
       this.lines += lines;
       if (this.lines >= LINES_PER_LEVEL) {
         this.level++;
@@ -240,3 +247,5 @@ class Board {
     return (level + 1) * lineClearPoints;
   }
 }
+
+const board = new Board();

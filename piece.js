@@ -3,8 +3,10 @@ class Piece {
   y;
   color;
   shape;
+  ctx;
 
   constructor(ctx) {
+    this.ctx = ctx;
     this.spawn();
   }
 

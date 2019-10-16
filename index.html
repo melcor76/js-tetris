@@ -13,26 +13,27 @@
  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico">
  -->  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles.css">
-  <script type="text/javascript" src="constants.js"></script>
-  <script type="text/javascript" src="board.js"></script>
-  <script type="text/javascript" src="piece.js"></script>
 </head>
 <html>
 <body>
 
   <div class="grid">
-      <canvas #board class="game-board"></canvas>
+      <canvas id="board" class="game-board"></canvas>
       <div class="right-column">
           <div>
               <h1>TETRIS</h1>
               <p>Score: <span id="points">0</span></p>
               <p>Lines: <span id="lines">0</span></p>
               <p>Level: <span id="level">0</span></p>
-              <canvas #next class="next"></canvas>
+              <canvas id="next" class="next"></canvas>
           </div>
-          <button (click)="play()" class="play-button">Play</button>
+          <button onclick="board.play()" class="play-button">Play</button>
       </div>
   </div>
+
+  <script type="text/javascript" src="constants.js"></script>
+  <script type="text/javascript" src="board.js"></script>
+  <script type="text/javascript" src="piece.js"></script>
 
 </body>
 </html>
