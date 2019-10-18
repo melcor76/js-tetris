@@ -1,16 +1,11 @@
-const canvas = document.getElementById("board");
-const canvasNext = document.getElementById("next");
-
 class Board {
-  ctxNext;
+  ctx;
   board;
   piece;
   next;
   requestId;
   time;
-  points;
-  lines;
-  level;
+
   moves = {
     [KEY.LEFT]: (p) => ({ ...p, x: p.x - 1 }),
     [KEY.RIGHT]: (p) => ({ ...p, x: p.x + 1 }),
@@ -19,9 +14,24 @@ class Board {
     [KEY.UP]: (p) => this.rotate(p)
   };
 
-  constructor() {
+  constructor(ctx) {
+    this.ctx = ctx;
     this.addEventListener();
     this.init();
+  }
+
+  init() {  
+    // Calculate size of canvas from constants.
+    this.ctx.canvas.width = COLS * BLOCK_SIZE;
+    this.ctx.canvas.height = ROWS * BLOCK_SIZE;
+  
+    // Scale so we don't need to give size on every draw.
+    this.ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
+  }
+
+  reset() {
+    this.board = this.getEmptyBoard();
+    this.piece = new Piece(ctx);
   }
 
   addEventListener() {
@@ -47,69 +57,6 @@ class Board {
         }
       }
     });
-  }
-
-  init() {
-    this.initBoard();
-    this.initNext();
-    this.resetGame();
-  }
-
-  initBoard() {
-    this.ctx = canvas.getContext('2d');
-
-    // Calculate size of canvas from constants.
-    this.ctx.canvas.width = COLS * BLOCK_SIZE;
-    this.ctx.canvas.height = ROWS * BLOCK_SIZE;
-
-    // Scale so we don't need to give size on every draw.
-    this.ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
-  }
-
-  initNext() {
-    this.ctxNext = canvasNext.getContext('2d');
-
-    // Calculate size of canvas from constants.
-    this.ctxNext.canvas.width = 4 * BLOCK_SIZE;
-    this.ctxNext.canvas.height = 4 * BLOCK_SIZE;
-
-    this.ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
-  }
-
-  play() {
-    this.resetGame();
-    this.next = new Piece(this.ctx);
-    this.piece = new Piece(this.ctx);
-    this.next.drawNext(this.ctxNext);
-    this.time.start = performance.now();
-
-    // If we have an old game running a game then cancel the old
-    if (this.requestId) {
-      cancelAnimationFrame(this.requestId);
-    }
-
-    this.animate();
-  }
-
-  resetGame() {
-    this.points = 0;
-    this.lines = 0;
-    this.level = 0;
-    this.board = this.getEmptyBoard();
-    this.time = { start: 0, elapsed: 0, level: LEVEL[this.level] };
-  }
-
-  animate(now = 0) {
-    this.time.elapsed = now - this.time.start;
-    if (this.time.elapsed > this.time.level) {
-      this.time.start = now;
-      if (!this.drop()) {
-        this.gameOver();
-        return;
-      }
-    }
-    this.draw();
-    this.requestId = requestAnimationFrame(this.animate.bind(this));
   }
 
   draw() {
@@ -247,5 +194,3 @@ class Board {
     return (level + 1) * lineClearPoints;
   }
 }
-
-const board = new Board();
