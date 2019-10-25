@@ -1,22 +1,15 @@
 class Board {
   ctx;
+  ctxNext;
   board;
   piece;
   next;
   requestId;
   time;
 
-  moves = {
-    [KEY.LEFT]: (p) => ({ ...p, x: p.x - 1 }),
-    [KEY.RIGHT]: (p) => ({ ...p, x: p.x + 1 }),
-    [KEY.DOWN]: (p) => ({ ...p, y: p.y + 1 }),
-    [KEY.SPACE]: (p) => ({ ...p, y: p.y + 1 }),
-    [KEY.UP]: (p) => this.rotate(p)
-  };
-
-  constructor(ctx) {
+  constructor(ctx, ctxNext) {
     this.ctx = ctx;
-    this.addEventListener();
+    this.ctxNext = ctxNext;
     this.init();
   }
 
@@ -31,32 +24,9 @@ class Board {
 
   reset() {
     this.board = this.getEmptyBoard();
-    this.piece = new Piece(ctx);
-  }
-
-  addEventListener() {
-    document.addEventListener('keydown', (event) => {
-      if (event.keyCode === KEY.ESC) {
-        this.gameOver();
-      } else if (this.moves[event.keyCode]) {
-        event.preventDefault();
-        // Get new state
-        let p = this.moves[event.keyCode](this.piece);
-        if (event.keyCode === KEY.SPACE) {
-          // Hard drop
-          while (this.valid(p, this.board)) {
-            this.points += POINTS.HARD_DROP;
-            this.piece.move(p);
-            p = this.moves[KEY.DOWN](this.piece);
-          }
-        } else if (this.valid(p, this.board)) {
-          this.piece.move(p);
-          if (event.keyCode === KEY.DOWN) {
-            this.points += POINTS.SOFT_DROP;
-          }
-        }
-      }
-    });
+    this.piece = new Piece(this.ctx);
+    this.next = new Piece(ctx);
+    this.next.drawNext(ctxNext);
   }
 
   draw() {
@@ -66,8 +36,8 @@ class Board {
   }
 
   drop() {
-    let p = this.moves[KEY.DOWN](this.piece);
-    if (this.valid(p, this.board)) {
+    let p = moves[KEY.DOWN](this.piece);
+    if (this.valid(p)) {
       this.piece.move(p);
     } else {
       this.freeze();
@@ -103,6 +73,21 @@ class Board {
     }
   }
 
+  valid(p) {
+    return p.shape.every((row, dy) => {
+      return row.every((value, dx) => {
+        let x = p.x + dx;
+        let y = p.y + dy;
+        return (
+          value === 0 ||
+          (this.insideWalls(x) &&
+            this.aboveFloor(y) &&
+            this.notOccupied(x, y))
+        );
+      });
+    });
+  }
+
   freeze() {
     this.piece.shape.forEach((row, y) => {
       row.forEach((value, x) => {
@@ -124,36 +109,8 @@ class Board {
     });
   }
 
-  gameOver() {
-    cancelAnimationFrame(this.requestId);
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillRect(1, 3, 8, 1.2);
-    this.ctx.font = '1px Arial';
-    this.ctx.fillStyle = 'red';
-    this.ctx.fillText('GAME OVER', 1.8, 4);
-  }
-
   getEmptyBoard() {
     return Array.from({ length: ROWS }, () => Array(COLS).fill(0));
-  }
-
-  valid(p, board) {
-    return p.shape.every((row, dy) => {
-      return row.every((value, dx) => {
-        let x = p.x + dx;
-        let y = p.y + dy;
-        return (
-          this.isEmpty(value) ||
-          (this.insideWalls(x) &&
-            this.aboveFloor(y) &&
-            this.notOccupied(board, x, y))
-        );
-      });
-    });
-  }
-
-  isEmpty(value) {
-    return value === 0;
   }
 
   insideWalls(x) {
@@ -164,8 +121,9 @@ class Board {
     return y <= ROWS;
   }
 
-  notOccupied(board, x, y) {
-    return board[y] && board[y][x] === 0;
+  notOccupied(x, y) {
+
+    return this.board[y] && this.board[y][x] === 0;
   }
 
   rotate(piece) {

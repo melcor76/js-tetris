@@ -8,19 +8,50 @@ let lines;
 let points;
 let requestId;
 
-let board = new Board(ctx);
+moves = {
+  [KEY.LEFT]: (p) => ({ ...p, x: p.x - 1 }),
+  [KEY.RIGHT]: (p) => ({ ...p, x: p.x + 1 }),
+  [KEY.DOWN]: (p) => ({ ...p, y: p.y + 1 }),
+  [KEY.SPACE]: (p) => ({ ...p, y: p.y + 1 }),
+  [KEY.UP]: (p) => this.rotate(p)
+};
 
-function init() {
-  initNext();
-  resetGame();
-}
+let board = new Board(ctx, ctxNext);
+addEventListener();
+initNext();
+resetGame();
 
 function initNext() {
   // Calculate size of canvas from constants.
   ctxNext.canvas.width = 4 * BLOCK_SIZE;
   ctxNext.canvas.height = 4 * BLOCK_SIZE;
-
   ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
+}
+
+function addEventListener() {
+  document.addEventListener('keydown', (event) => {
+    if (event.keyCode === KEY.ESC) {
+      gameOver();
+    } else if (moves[event.keyCode]) {
+      event.preventDefault();
+      // Get new state
+      let p = moves[event.keyCode](board.piece);
+      if (event.keyCode === KEY.SPACE) {
+        // Hard drop
+        while (board.valid(p)) {
+          points += POINTS.HARD_DROP;
+          board.piece.move(p);
+          p = moves[KEY.DOWN](board.piece);
+        }
+      } else if (board.valid(p)) {
+        console.log('move')
+        board.piece.move(p);
+        if (event.keyCode === KEY.DOWN) {
+          points += POINTS.SOFT_DROP;
+        }
+      }
+    }
+  });
 }
 
 function resetGame() {
@@ -32,9 +63,7 @@ function resetGame() {
 }
 
 function play() {
-  resetGame();
-  next = new Piece(ctx);
-  next.drawNext(ctxNext);
+  resetGame();  
   time.start = performance.now();
 
   // If we have an old game running a game then cancel the old
@@ -58,3 +87,11 @@ function animate(now = 0) {
   requestId = requestAnimationFrame(animate);
 }
 
+function gameOver() {
+  cancelAnimationFrame(requestId);
+  ctx.fillStyle = 'black';
+  ctx.fillRect(1, 3, 8, 1.2);
+  ctx.font = '1px Arial';
+  ctx.fillStyle = 'red';
+  ctx.fillText('GAME OVER', 1.8, 4);
+}
