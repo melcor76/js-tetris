@@ -1,7 +1,7 @@
 class Board {
   ctx;
   ctxNext;
-  board;
+  grid;
   piece;
   next;
   requestId;
@@ -13,24 +13,28 @@ class Board {
     this.init();
   }
 
-  init() {  
+  init() {
     // Calculate size of canvas from constants.
     this.ctx.canvas.width = COLS * BLOCK_SIZE;
     this.ctx.canvas.height = ROWS * BLOCK_SIZE;
-  
+
     // Scale so we don't need to give size on every draw.
     this.ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
   }
 
   reset() {
-    this.board = this.getEmptyBoard();
+    this.grid = this.getEmptyGrid();
     this.piece = new Piece(this.ctx);
-    this.next = new Piece(ctx);
-    this.next.drawNext(ctxNext);
+    this.piece.setStartingPosition();
+    this.getNewPiece();
+  }
+
+  getNewPiece() {
+    this.next = new Piece(this.ctxNext);
+    this.next.draw();
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.piece.draw();
     this.drawBoard();
   }
@@ -47,19 +51,20 @@ class Board {
         return false;
       }
       this.piece = this.next;
-      this.next = new Piece(this.ctx);
-      this.next.drawNext(this.ctxNext);
+      this.piece.ctx = this.ctx;
+      this.piece.setStartingPosition();
+      this.getNewPiece();
     }
     return true;
   }
 
   clearLines() {
     let lines = 0;
-    this.board.forEach((row, y) => {
+    this.grid.forEach((row, y) => {
       if (row.every(value => value !== 0)) {
         lines++;
-        this.board.splice(y, 1);
-        this.board.unshift(Array(COLS).fill(0));
+        this.grid.splice(y, 1);
+        this.grid.unshift(Array(COLS).fill(0));
       }
     });
     if (lines > 0) {
@@ -80,9 +85,7 @@ class Board {
         let y = p.y + dy;
         return (
           value === 0 ||
-          (this.insideWalls(x) &&
-            this.aboveFloor(y) &&
-            this.notOccupied(x, y))
+          (this.insideWalls(x) && this.aboveFloor(y) && this.notOccupied(x, y))
         );
       });
     });
@@ -92,14 +95,14 @@ class Board {
     this.piece.shape.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value > 0) {
-          this.board[y + this.piece.y][x + this.piece.x] = value;
+          this.grid[y + this.piece.y][x + this.piece.x] = value;
         }
       });
     });
   }
 
   drawBoard() {
-    this.board.forEach((row, y) => {
+    this.grid.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value > 0) {
           this.ctx.fillStyle = COLORS[value];
@@ -109,7 +112,7 @@ class Board {
     });
   }
 
-  getEmptyBoard() {
+  getEmptyGrid() {
     return Array.from({ length: ROWS }, () => Array(COLS).fill(0));
   }
 
@@ -122,8 +125,7 @@ class Board {
   }
 
   notOccupied(x, y) {
-
-    return this.board[y] && this.board[y][x] === 0;
+    return this.grid[y] && this.grid[y][x] === 0;
   }
 
   rotate(piece) {

@@ -1,6 +1,6 @@
-const canvas = document.getElementById("board");
+const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
-const canvasNext = document.getElementById("next");
+const canvasNext = document.getElementById('next');
 const ctxNext = canvasNext.getContext('2d');
 
 let level;
@@ -9,17 +9,16 @@ let points;
 let requestId;
 
 moves = {
-  [KEY.LEFT]: (p) => ({ ...p, x: p.x - 1 }),
-  [KEY.RIGHT]: (p) => ({ ...p, x: p.x + 1 }),
-  [KEY.DOWN]: (p) => ({ ...p, y: p.y + 1 }),
-  [KEY.SPACE]: (p) => ({ ...p, y: p.y + 1 }),
-  [KEY.UP]: (p) => this.rotate(p)
+  [KEY.LEFT]: p => ({ ...p, x: p.x - 1 }),
+  [KEY.RIGHT]: p => ({ ...p, x: p.x + 1 }),
+  [KEY.DOWN]: p => ({ ...p, y: p.y + 1 }),
+  [KEY.SPACE]: p => ({ ...p, y: p.y + 1 }),
+  [KEY.UP]: p => board.rotate(p)
 };
 
 let board = new Board(ctx, ctxNext);
 addEventListener();
 initNext();
-resetGame();
 
 function initNext() {
   // Calculate size of canvas from constants.
@@ -29,7 +28,7 @@ function initNext() {
 }
 
 function addEventListener() {
-  document.addEventListener('keydown', (event) => {
+  document.addEventListener('keydown', event => {
     if (event.keyCode === KEY.ESC) {
       gameOver();
     } else if (moves[event.keyCode]) {
@@ -44,7 +43,6 @@ function addEventListener() {
           p = moves[KEY.DOWN](board.piece);
         }
       } else if (board.valid(p)) {
-        console.log('move')
         board.piece.move(p);
         if (event.keyCode === KEY.DOWN) {
           points += POINTS.SOFT_DROP;
@@ -63,7 +61,7 @@ function resetGame() {
 }
 
 function play() {
-  resetGame();  
+  resetGame();
   time.start = performance.now();
 
   // If we have an old game running a game then cancel the old
