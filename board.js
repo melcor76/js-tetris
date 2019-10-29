@@ -66,13 +66,21 @@ class Board {
 
   clearLines() {
     let lines = 0;
+
     this.grid.forEach((row, y) => {
-      if (row.every(value => value !== 0)) {
+
+      // If every value is greater than 0.
+      if (row.every(value => value > 0)) {
         lines++;
+
+        // Remove the row.
         this.grid.splice(y, 1);
+
+        // Add zero filled row at the top.
         this.grid.unshift(Array(COLS).fill(0));
       }
     });
+    
     if (lines > 0) {
       this.points += this.getLinesClearedPoints(lines, this.level);
       this.lines += lines;
