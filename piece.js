@@ -20,7 +20,6 @@ class Piece {
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.fillStyle = this.color;
     this.shape.forEach((row, y) => {
       row.forEach((value, x) => {

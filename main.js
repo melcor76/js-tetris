@@ -63,7 +63,6 @@ function resetGame() {
 function play() {
   resetGame();
   time.start = performance.now();
-
   // If we have an old game running a game then cancel the old
   if (requestId) {
     cancelAnimationFrame(requestId);
@@ -81,6 +80,10 @@ function animate(now = 0) {
       return;
     }
   }
+
+  // Clear board before drawing new state.
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
   board.draw();
   requestId = requestAnimationFrame(animate);
 }
