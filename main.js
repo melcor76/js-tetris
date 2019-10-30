@@ -3,9 +3,20 @@ const ctx = canvas.getContext('2d');
 const canvasNext = document.getElementById('next');
 const ctxNext = canvasNext.getContext('2d');
 
-let level;
-let lines;
-let points;
+let account = {
+  score: 0,
+  level: 0,
+  lines: 0
+}
+
+let accountProxy = new Proxy(account, {
+  set: function (target, key, value) {
+    target[key] = value;
+    updateAccount(key, value);
+    return true;
+  }
+});
+
 let requestId;
 
 moves = {
@@ -38,14 +49,14 @@ function addEventListener() {
       if (event.keyCode === KEY.SPACE) {
         // Hard drop
         while (board.valid(p)) {
-          points += POINTS.HARD_DROP;
+          accountProxy.score += POINTS.HARD_DROP;
           board.piece.move(p);
           p = moves[KEY.DOWN](board.piece);
-        }
+        }       
       } else if (board.valid(p)) {
         board.piece.move(p);
         if (event.keyCode === KEY.DOWN) {
-          points += POINTS.SOFT_DROP;
+          accountProxy.score += POINTS.SOFT_DROP;         
         }
       }
     }
@@ -53,9 +64,9 @@ function addEventListener() {
 }
 
 function resetGame() {
-  points = 0;
-  lines = 0;
-  level = 0;
+  accountProxy.score = 0;
+  accountProxy.lines = 0;
+  accountProxy.level = 0;
   board.reset();
   time = { start: 0, elapsed: 0, level: LEVEL[level] };
 }
@@ -95,4 +106,11 @@ function gameOver() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'red';
   ctx.fillText('GAME OVER', 1.8, 4);
+}
+
+function updateAccount(key, value) {
+  let element = document.getElementById(key);
+  if (element) {
+    element.textContent = value;
+  }
 }

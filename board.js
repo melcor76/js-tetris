@@ -82,12 +82,12 @@ class Board {
     });
     
     if (lines > 0) {
-      this.points += this.getLinesClearedPoints(lines, this.level);
-      this.lines += lines;
-      if (this.lines >= LINES_PER_LEVEL) {
-        this.level++;
-        this.lines -= LINES_PER_LEVEL;
-        this.time.level = LEVEL[this.level];
+      accountProxy.score += this.getLinesClearedPoints(lines);
+      accountProxy.lines += lines;
+      if (account.lines >= LINES_PER_LEVEL) {
+        accountProxy.level++;    
+        accountProxy.lines -= LINES_PER_LEVEL;
+        time.level = LEVEL[account.level];
       }
     }
   }
@@ -165,6 +165,6 @@ class Board {
         ? POINTS.TETRIS
         : 0;
 
-    return (level + 1) * lineClearPoints;
+    return (account.level + 1) * lineClearPoints;
   }
 }
