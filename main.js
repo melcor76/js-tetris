@@ -40,6 +40,9 @@ function initNext() {
 
 function addEventListener() {
   document.addEventListener('keydown', event => {
+    if (event.keyCode === KEY.P) {
+      pause();
+    }
     if (event.keyCode === KEY.ESC) {
       gameOver();
     } else if (moves[event.keyCode]) {
@@ -106,6 +109,22 @@ function gameOver() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'red';
   ctx.fillText('GAME OVER', 1.8, 4);
+}
+
+function pause() {
+  if (!requestId) {
+    animate();
+    return;
+  }
+
+  cancelAnimationFrame(requestId);
+  requestId = null;
+  
+  ctx.fillStyle = 'black';
+  ctx.fillRect(1, 3, 8, 1.2);
+  ctx.font = '1px Arial';
+  ctx.fillStyle = 'yellow';
+  ctx.fillText('PAUSED', 3, 4);
 }
 
 function updateAccount(key, value) {

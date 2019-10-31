@@ -30,6 +30,7 @@ class KEY {
   static UP = 38;
   static RIGHT = 39;
   static DOWN = 40;
+  static P = 80;
 }
 
 class POINTS {
