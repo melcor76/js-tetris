@@ -3,14 +3,14 @@ const ctx = canvas.getContext('2d');
 const canvasNext = document.getElementById('next');
 const ctxNext = canvasNext.getContext('2d');
 
-let account = {
+let accountValues = {
   score: 0,
   level: 0,
   lines: 0
 }
 
-let accountProxy = new Proxy(account, {
-  set: function (target, key, value) {
+let account = new Proxy(accountValues, {
+  set: (target, key, value) => {
     target[key] = value;
     updateAccount(key, value);
     return true;
@@ -49,14 +49,14 @@ function addEventListener() {
       if (event.keyCode === KEY.SPACE) {
         // Hard drop
         while (board.valid(p)) {
-          accountProxy.score += POINTS.HARD_DROP;
+          account.score += POINTS.HARD_DROP;
           board.piece.move(p);
           p = moves[KEY.DOWN](board.piece);
         }       
       } else if (board.valid(p)) {
         board.piece.move(p);
         if (event.keyCode === KEY.DOWN) {
-          accountProxy.score += POINTS.SOFT_DROP;         
+          account.score += POINTS.SOFT_DROP;         
         }
       }
     }
@@ -64,11 +64,11 @@ function addEventListener() {
 }
 
 function resetGame() {
-  accountProxy.score = 0;
-  accountProxy.lines = 0;
-  accountProxy.level = 0;
+  account.score = 0;
+  account.lines = 0;
+  account.level = 0;
   board.reset();
-  time = { start: 0, elapsed: 0, level: LEVEL[level] };
+  time = { start: 0, elapsed: 0, level: LEVEL[account.level] };
 }
 
 function play() {

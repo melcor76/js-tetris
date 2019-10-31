@@ -82,11 +82,11 @@ class Board {
     });
     
     if (lines > 0) {
-      accountProxy.score += this.getLinesClearedPoints(lines);
-      accountProxy.lines += lines;
+      account.score += this.getLinesClearedPoints(lines);
+      account.lines += lines;
       if (account.lines >= LINES_PER_LEVEL) {
-        accountProxy.level++;    
-        accountProxy.lines -= LINES_PER_LEVEL;
+        account.level++;    
+        account.lines -= LINES_PER_LEVEL;
         time.level = LEVEL[account.level];
       }
     }
