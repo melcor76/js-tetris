@@ -1,2 +1,5 @@
 # js-tetris
-JavaScript Tetris
+
+Tetris game in Modern JavaScript.
+
+![tetris picture](assets/share-image-large.png)
