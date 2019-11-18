@@ -12,6 +12,8 @@ const COLORS = [
   'purple',
   'red'
 ];
+Object.freeze(COLORS);
+
 const SHAPES = [
   [],
   [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
@@ -22,47 +24,51 @@ const SHAPES = [
   [[0, 6, 0], [6, 6, 6], [0, 0, 0]],
   [[7, 7, 0], [0, 7, 7], [0, 0, 0]]
 ];
+Object.freeze(SHAPES);
 
-class KEY {
-  static ESC = 27;
-  static SPACE = 32;
-  static LEFT = 37;
-  static UP = 38;
-  static RIGHT = 39;
-  static DOWN = 40;
-  static P = 80;
+const KEY = {
+  ESC: 27,
+  SPACE: 32,
+  LEFT: 37,
+  UP: 38,
+  RIGHT: 39,
+  DOWN: 40,
+  P: 80
 }
+Object.freeze(KEY);
 
-class POINTS {
-  static SINGLE = 100;
-  static DOUBLE = 300;
-  static TRIPLE = 500;
-  static TETRIS = 800;
-  static SOFT_DROP = 1;
-  static HARD_DROP = 2;
+const POINTS = {
+  SINGLE: 100,
+  DOUBLE: 300,
+  TRIPLE: 500,
+  TETRIS: 800,
+  SOFT_DROP: 1,
+  HARD_DROP: 2,
 }
+Object.freeze(POINTS);
 
-class LEVEL {
-  static 0 = 800;
-  static 1 = 720;
-  static 2 = 630;
-  static 3 = 550;
-  static 4 = 470;
-  static 5 = 380;
-  static 6 = 300;
-  static 7 = 220;
-  static 8 = 130;
-  static 9 = 100;
-  static 10 = 80;
-  static 11 = 80;
-  static 12 = 80;
-  static 13 = 70;
-  static 14 = 70;
-  static 15 = 70;
-  static 16 = 50;
-  static 17 = 50;
-  static 18 = 50;
-  static 19 = 30;
-  static 20 = 30;
+const LEVEL = {
+  0: 800,
+  1: 720,
+  2: 630,
+  3: 550,
+  4: 470,
+  5: 380,
+  6: 300,
+  7: 220,
+  8: 130,
+  9: 100,
+  10: 80,
+  11: 80,
+  12: 80,
+  13: 70,
+  14: 70,
+  15: 70,
+  16: 50,
+  17: 50,
+  18: 50,
+  19: 30,
+  20: 30,
   // 29+ is 20ms
 }
+Object.freeze(LEVEL);
