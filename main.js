@@ -9,6 +9,13 @@ let accountValues = {
   lines: 0
 }
 
+function updateAccount(key, value) {
+  let element = document.getElementById(key);
+  if (element) {
+    element.textContent = value;
+  }
+}
+
 let account = new Proxy(accountValues, {
   set: (target, key, value) => {
     target[key] = value;
@@ -127,9 +134,3 @@ function pause() {
   ctx.fillText('PAUSED', 3, 4);
 }
 
-function updateAccount(key, value) {
-  let element = document.getElementById(key);
-  if (element) {
-    element.textContent = value;
-  }
-}

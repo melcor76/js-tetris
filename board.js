@@ -82,11 +82,20 @@ class Board {
     });
     
     if (lines > 0) {
+      // Calculate points from cleared lines and level.
+
       account.score += this.getLinesClearedPoints(lines);
       account.lines += lines;
+
+      // If we have reached the lines for next level
       if (account.lines >= LINES_PER_LEVEL) {
-        account.level++;    
+        // Goto next level
+        account.level++;  
+        
+        // Remove lines so we start working for the next level
         account.lines -= LINES_PER_LEVEL;
+
+        // Increase speed of game
         time.level = LEVEL[account.level];
       }
     }
@@ -143,12 +152,17 @@ class Board {
   }
 
   rotate(piece) {
+    // Clone with JSON for immutability.
     let p = JSON.parse(JSON.stringify(piece));
+
+    // Transpose matrix
     for (let y = 0; y < p.shape.length; ++y) {
       for (let x = 0; x < y; ++x) {
         [p.shape[x][y], p.shape[y][x]] = [p.shape[y][x], p.shape[x][y]];
       }
     }
+
+    // Reverse the order of the columns.
     p.shape.forEach(row => row.reverse());
     return p;
   }
