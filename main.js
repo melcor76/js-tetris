@@ -31,7 +31,8 @@ moves = {
   [KEY.RIGHT]: p => ({ ...p, x: p.x + 1 }),
   [KEY.DOWN]: p => ({ ...p, y: p.y + 1 }),
   [KEY.SPACE]: p => ({ ...p, y: p.y + 1 }),
-  [KEY.UP]: p => board.rotate(p)
+  [KEY.UP]: p => board.rotate(p,'right'),
+  [KEY.Q]: p => board.rotate(p,'left')
 };
 
 let board = new Board(ctx, ctxNext);
@@ -62,7 +63,8 @@ function addEventListener() {
           account.score += POINTS.HARD_DROP;
           board.piece.move(p);
           p = moves[KEY.DOWN](board.piece);
-        }       
+        }
+        board.piece.hardDrop();     
       } else if (board.valid(p)) {
         board.piece.move(p);
         if (event.keyCode === KEY.DOWN) {
