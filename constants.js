@@ -77,3 +77,9 @@ const LEVEL = {
   // 29+ is 20ms
 }
 Object.freeze(LEVEL);
+
+const ROTATION = {
+  LEFT: 'left',
+  RIGHT: 'right'
+}
+Object.freeze(ROTATION);
