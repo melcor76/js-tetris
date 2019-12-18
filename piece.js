@@ -5,6 +5,7 @@ class Piece {
   shape;
   ctx;
   typeId;
+  hardDropped;
 
   constructor(ctx) {
     this.ctx = ctx;
@@ -17,6 +18,7 @@ class Piece {
     this.color = COLORS[this.typeId];
     this.x = 0;
     this.y = 0;
+    this.hardDropped = false;
   }
 
   draw() {
@@ -31,9 +33,15 @@ class Piece {
   }
 
   move(p) {
-    this.x = p.x;
-    this.y = p.y;
+    if(!this.hardDropped){
+      this.x = p.x;
+      this.y = p.y;
+    }
     this.shape = p.shape;
+  }
+
+  hardDrop(){
+    this.hardDropped = true;
   }
 
   setStartingPosition() {
