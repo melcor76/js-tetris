@@ -36,7 +36,7 @@ moves = {
 };
 
 let board = new Board(ctx, ctxNext);
-addEventListener();
+
 initNext();
 
 function initNext() {
@@ -64,11 +64,11 @@ function addEventListener() {
           board.piece.move(p);
           p = moves[KEY.DOWN](board.piece);
         }
-        board.piece.hardDrop();     
+        board.piece.hardDrop();
       } else if (board.valid(p)) {
         board.piece.move(p);
         if (event.keyCode === KEY.DOWN) {
-          account.score += POINTS.SOFT_DROP;         
+          account.score += POINTS.SOFT_DROP;
         }
       }
     }
@@ -84,6 +84,7 @@ function resetGame() {
 }
 
 function play() {
+  addEventListener();
   resetGame();
   time.start = performance.now();
   // If we have an old game running a game then cancel the old
@@ -128,11 +129,10 @@ function pause() {
 
   cancelAnimationFrame(requestId);
   requestId = null;
-  
+
   ctx.fillStyle = 'black';
   ctx.fillRect(1, 3, 8, 1.2);
   ctx.font = '1px Arial';
   ctx.fillStyle = 'yellow';
   ctx.fillText('PAUSED', 3, 4);
 }
-
