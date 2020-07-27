@@ -47,32 +47,35 @@ function initNext() {
 }
 
 function addEventListener() {
-  document.addEventListener('keydown', event => {
-    if (event.keyCode === KEY.P) {
-      pause();
-    }
-    if (event.keyCode === KEY.ESC) {
-      gameOver();
-    } else if (moves[event.keyCode]) {
-      event.preventDefault();
-      // Get new state
-      let p = moves[event.keyCode](board.piece);
-      if (event.keyCode === KEY.SPACE) {
-        // Hard drop
-        while (board.valid(p)) {
-          account.score += POINTS.HARD_DROP;
-          board.piece.move(p);
-          p = moves[KEY.DOWN](board.piece);
-        }
-        board.piece.hardDrop();
-      } else if (board.valid(p)) {
+  document.removeEventListener('keydown', handleKeyPress);
+  document.addEventListener('keydown', handleKeyPress);
+}
+
+function handleKeyPress(event) {
+  if (event.keyCode === KEY.P) {
+    pause();
+  }
+  if (event.keyCode === KEY.ESC) {
+    gameOver();
+  } else if (moves[event.keyCode]) {
+    event.preventDefault();
+    // Get new state
+    let p = moves[event.keyCode](board.piece);
+    if (event.keyCode === KEY.SPACE) {
+      // Hard drop
+      while (board.valid(p)) {
+        account.score += POINTS.HARD_DROP;
         board.piece.move(p);
-        if (event.keyCode === KEY.DOWN) {
-          account.score += POINTS.SOFT_DROP;
-        }
+        p = moves[KEY.DOWN](board.piece);
+      }
+      board.piece.hardDrop();
+    } else if (board.valid(p)) {
+      board.piece.move(p);
+      if (event.keyCode === KEY.DOWN) {
+        account.score += POINTS.SOFT_DROP;
       }
     }
-  });
+  }
 }
 
 function resetGame() {
