@@ -7,7 +7,7 @@ let accountValues = {
   score: 0,
   level: 0,
   lines: 0
-}
+};
 
 function updateAccount(key, value) {
   let element = document.getElementById(key);
@@ -24,15 +24,16 @@ let account = new Proxy(accountValues, {
   }
 });
 
-let requestId;
+let requestId = null;
+let time = null;
 
 moves = {
-  [KEY.LEFT]: p => ({ ...p, x: p.x - 1 }),
-  [KEY.RIGHT]: p => ({ ...p, x: p.x + 1 }),
-  [KEY.DOWN]: p => ({ ...p, y: p.y + 1 }),
-  [KEY.SPACE]: p => ({ ...p, y: p.y + 1 }),
-  [KEY.UP]: p => board.rotate(p, ROTATION.RIGHT),
-  [KEY.Q]: p => board.rotate(p, ROTATION.LEFT)
+  [KEY.LEFT]: (p) => ({ ...p, x: p.x - 1 }),
+  [KEY.RIGHT]: (p) => ({ ...p, x: p.x + 1 }),
+  [KEY.DOWN]: (p) => ({ ...p, y: p.y + 1 }),
+  [KEY.SPACE]: (p) => ({ ...p, y: p.y + 1 }),
+  [KEY.UP]: (p) => board.rotate(p, ROTATION.RIGHT),
+  [KEY.Q]: (p) => board.rotate(p, ROTATION.LEFT)
 };
 
 let board = new Board(ctx, ctxNext);
@@ -83,14 +84,14 @@ function resetGame() {
   account.lines = 0;
   account.level = 0;
   board.reset();
-  time = { start: 0, elapsed: 0, level: LEVEL[account.level] };
+  time = { start: performance.now(), elapsed: 0, level: LEVEL[account.level] };
 }
 
 function play() {
   addEventListener();
   resetGame();
-  time.start = performance.now();
-  // If we have an old game running a game then cancel the old
+
+  // If we have an old game running then cancel it
   if (requestId) {
     cancelAnimationFrame(requestId);
   }

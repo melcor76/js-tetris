@@ -1,12 +1,4 @@
 class Piece {
-  x;
-  y;
-  color;
-  shape;
-  ctx;
-  typeId;
-  hardDropped;
-
   constructor(ctx) {
     this.ctx = ctx;
     this.spawn();
@@ -33,14 +25,14 @@ class Piece {
   }
 
   move(p) {
-    if(!this.hardDropped){
+    if (!this.hardDropped) {
       this.x = p.x;
       this.y = p.y;
     }
     this.shape = p.shape;
   }
 
-  hardDrop(){
+  hardDrop() {
     this.hardDropped = true;
   }
 

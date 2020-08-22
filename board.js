@@ -1,12 +1,4 @@
 class Board {
-  ctx;
-  ctxNext;
-  grid;
-  piece;
-  next;
-  requestId;
-  time;
-
   constructor(ctx, ctxNext) {
     this.ctx = ctx;
     this.ctxNext = ctxNext;
@@ -30,13 +22,9 @@ class Board {
   }
 
   getNewPiece() {
+    const { width, height } = this.ctxNext.canvas;
     this.next = new Piece(this.ctxNext);
-    this.ctxNext.clearRect(
-      0,
-      0, 
-      this.ctxNext.canvas.width, 
-      this.ctxNext.canvas.height
-    );
+    this.ctxNext.clearRect(0, 0, width, height);
     this.next.draw();
   }
 
@@ -68,9 +56,8 @@ class Board {
     let lines = 0;
 
     this.grid.forEach((row, y) => {
-
-      // If every value is greater than 0.
-      if (row.every(value => value > 0)) {
+      // If every value is greater than zero then we have a full row.
+      if (row.every((value) => value > 0)) {
         lines++;
 
         // Remove the row.
@@ -80,7 +67,7 @@ class Board {
         this.grid.unshift(Array(COLS).fill(0));
       }
     });
-    
+
     if (lines > 0) {
       // Calculate points from cleared lines and level.
 
@@ -90,8 +77,8 @@ class Board {
       // If we have reached the lines for next level
       if (account.lines >= LINES_PER_LEVEL) {
         // Goto next level
-        account.level++;  
-        
+        account.level++;
+
         // Remove lines so we start working for the next level
         account.lines -= LINES_PER_LEVEL;
 
@@ -106,10 +93,7 @@ class Board {
       return row.every((value, dx) => {
         let x = p.x + dx;
         let y = p.y + dy;
-        return (
-          value === 0 ||
-          (this.insideWalls(x) && this.aboveFloor(y) && this.notOccupied(x, y))
-        );
+        return value === 0 || (this.isInsideWalls(x, y) && this.notOccupied(x, y));
       });
     });
   }
@@ -139,22 +123,18 @@ class Board {
     return Array.from({ length: ROWS }, () => Array(COLS).fill(0));
   }
 
-  insideWalls(x) {
-    return x >= 0 && x < COLS;
-  }
-
-  aboveFloor(y) {
-    return y <= ROWS;
+  isInsideWalls(x, y) {
+    return x >= 0 && x < COLS && y <= ROWS;
   }
 
   notOccupied(x, y) {
     return this.grid[y] && this.grid[y][x] === 0;
   }
 
-  rotate(piece,direction) {
+  rotate(piece, direction) {
     // Clone with JSON for immutability.
     let p = JSON.parse(JSON.stringify(piece));
-    if(!piece.hardDropped){
+    if (!piece.hardDropped) {
       // Transpose matrix
       for (let y = 0; y < p.shape.length; ++y) {
         for (let x = 0; x < y; ++x) {
@@ -162,13 +142,13 @@ class Board {
         }
       }
       // Reverse the order of the columns.
-      if(direction === ROTATION.RIGHT) {
-        p.shape.forEach(row => row.reverse());
+      if (direction === ROTATION.RIGHT) {
+        p.shape.forEach((row) => row.reverse());
       } else if (direction === ROTATION.LEFT) {
         p.shape.reverse();
       }
     }
-    
+
     return p;
   }
 
