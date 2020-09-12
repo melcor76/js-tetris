@@ -14,7 +14,6 @@ const COLORS = [
   'purple',
   'red'
 ];
-Object.freeze(COLORS);
 
 const SHAPES = [
   [],
@@ -28,7 +27,7 @@ const SHAPES = [
   [[0, 6, 0], [6, 6, 6], [0, 0, 0]],
   [[7, 7, 0], [0, 7, 7], [0, 0, 0]]
 ];
-Object.freeze(SHAPES);
+
 
 const KEY = {
   ESC: 27,
@@ -39,8 +38,8 @@ const KEY = {
   DOWN: 40,
   P: 80,
   Q: 81
-}
-Object.freeze(KEY);
+};
+
 
 const POINTS = {
   SINGLE: 100,
@@ -49,8 +48,8 @@ const POINTS = {
   TETRIS: 800,
   SOFT_DROP: 1,
   HARD_DROP: 2,
-}
-Object.freeze(POINTS);
+};
+
 
 const LEVEL = {
   0: 800,
@@ -75,11 +74,13 @@ const LEVEL = {
   19: 30,
   20: 30,
   // 29+ is 20ms
-}
-Object.freeze(LEVEL);
+};
+
 
 const ROTATION = {
   LEFT: 'left',
   RIGHT: 'right'
-}
-Object.freeze(ROTATION);
+};
+
+
+[COLORS, SHAPES, KEY, POINTS, LEVEL, ROTATION].forEach(item => Object.freeze(item));
