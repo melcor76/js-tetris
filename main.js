@@ -79,17 +79,25 @@ function handleKeyPress(event) {
   }
 }
 
+let count = 0;
+
 function resetGame() {
   account.score = 0;
   account.lines = 0;
   account.level = 0;
   board.reset();
   time = { start: performance.now(), elapsed: 0, level: LEVEL[account.level] };
+
 }
 
 function play() {
   addEventListener();
-  resetGame();
+  console.log(`count: ${count}`);
+  if(document.querySelector("#play-btn").style.display == ""){
+    resetGame();
+  }
+
+  count++;
 
   // If we have an old game running then cancel it
   if (requestId) {
@@ -97,6 +105,8 @@ function play() {
   }
 
   animate();
+  document.querySelector("#play-btn").style.display = "none";
+  document.querySelector("#pause-btn").style.display = "block";
 }
 
 function animate(now = 0) {
@@ -123,6 +133,9 @@ function gameOver() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'red';
   ctx.fillText('GAME OVER', 1.8, 4);
+  
+  document.querySelector("#pause-btn").style.display = "none";
+  document.querySelector("#play-btn").style.display = "";
 }
 
 function pause() {
@@ -133,10 +146,13 @@ function pause() {
 
   cancelAnimationFrame(requestId);
   requestId = null;
+  document.removeEventListener('keydown', handleKeyPress);
 
   ctx.fillStyle = 'black';
   ctx.fillRect(1, 3, 8, 1.2);
   ctx.font = '1px Arial';
   ctx.fillStyle = 'yellow';
   ctx.fillText('PAUSED', 3, 4);
+  document.querySelector("#play-btn").style.display = "block";
+  document.querySelector("#pause-btn").style.display = "none";
 }

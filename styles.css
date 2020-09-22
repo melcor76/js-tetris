@@ -23,3 +23,7 @@
   padding: 15px 30px;
   cursor: pointer;
 }
+
+#pause-btn{
+  display:none;
+}
