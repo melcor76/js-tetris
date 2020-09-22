@@ -55,6 +55,9 @@ function addEventListener() {
 function handleKeyPress(event) {
   if (event.keyCode === KEY.P) {
     pause();
+    if(document.querySelector("#pause-btn").style.display == "block"){
+      return;
+    }
   }
   if (event.keyCode === KEY.ESC) {
     gameOver();
@@ -90,7 +93,6 @@ function resetGame() {
 
 function play() {
   addEventListener();
-  console.log(`count: ${count}`);
   if(document.querySelector("#play-btn").style.display == ""){
     resetGame();
   }
@@ -129,20 +131,21 @@ function gameOver() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'red';
   ctx.fillText('GAME OVER', 1.8, 4);
-  
+  resetGame();
   document.querySelector("#pause-btn").style.display = "none";
   document.querySelector("#play-btn").style.display = "";
 }
 
 function pause() {
   if (!requestId) {
+    document.querySelector("#play-btn").style.display = "none";
+    document.querySelector("#pause-btn").style.display = "block";
     animate();
     return;
   }
 
   cancelAnimationFrame(requestId);
   requestId = null;
-  document.removeEventListener('keydown', handleKeyPress);
 
   ctx.fillStyle = 'black';
   ctx.fillRect(1, 3, 8, 1.2);
