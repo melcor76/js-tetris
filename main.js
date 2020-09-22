@@ -79,8 +79,6 @@ function handleKeyPress(event) {
   }
 }
 
-let count = 0;
-
 function resetGame() {
   account.score = 0;
   account.lines = 0;
@@ -96,8 +94,6 @@ function play() {
   if(document.querySelector("#play-btn").style.display == ""){
     resetGame();
   }
-
-  count++;
 
   // If we have an old game running then cancel it
   if (requestId) {
