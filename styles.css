@@ -5,6 +5,9 @@
 .grid {
   display: grid;
   grid-template-columns: 320px 200px;
+  position:absolute;
+  left:50%;
+  transform: translate(-50%, 0);
 }
 
 .right-column {
@@ -22,4 +25,8 @@
   font-size: 16px;
   padding: 15px 30px;
   cursor: pointer;
+}
+
+#pause-btn{
+  display:none;
 }

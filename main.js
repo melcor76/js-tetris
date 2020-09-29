@@ -55,6 +55,9 @@ function addEventListener() {
 function handleKeyPress(event) {
   if (event.keyCode === KEY.P) {
     pause();
+    if(document.querySelector("#pause-btn").style.display == "block"){
+      return;
+    }
   }
   if (event.keyCode === KEY.ESC) {
     gameOver();
@@ -85,11 +88,14 @@ function resetGame() {
   account.level = 0;
   board.reset();
   time = { start: performance.now(), elapsed: 0, level: LEVEL[account.level] };
+
 }
 
 function play() {
   addEventListener();
-  resetGame();
+  if(document.querySelector("#play-btn").style.display == ""){
+    resetGame();
+  }
 
   // If we have an old game running then cancel it
   if (requestId) {
@@ -97,6 +103,8 @@ function play() {
   }
 
   animate();
+  document.querySelector("#play-btn").style.display = "none";
+  document.querySelector("#pause-btn").style.display = "block";
 }
 
 function animate(now = 0) {
@@ -123,10 +131,15 @@ function gameOver() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'red';
   ctx.fillText('GAME OVER', 1.8, 4);
+  resetGame();
+  document.querySelector("#pause-btn").style.display = "none";
+  document.querySelector("#play-btn").style.display = "";
 }
 
 function pause() {
   if (!requestId) {
+    document.querySelector("#play-btn").style.display = "none";
+    document.querySelector("#pause-btn").style.display = "block";
     animate();
     return;
   }
@@ -139,4 +152,6 @@ function pause() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'yellow';
   ctx.fillText('PAUSED', 3, 4);
+  document.querySelector("#play-btn").style.display = "block";
+  document.querySelector("#pause-btn").style.display = "none";
 }
