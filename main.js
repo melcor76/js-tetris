@@ -39,6 +39,7 @@ const moves = {
 let board = new Board(ctx, ctxNext);
 
 initNext();
+showHighScores();
 
 function initNext() {
   // Calculate size of canvas from constants.
@@ -55,7 +56,7 @@ function addEventListener() {
 function handleKeyPress(event) {
   if (event.keyCode === KEY.P) {
     pause();
-    if(document.querySelector("#pause-btn").style.display == "block"){
+    if (document.querySelector('#pause-btn').style.display == 'block') {
       return;
     }
   }
@@ -88,12 +89,11 @@ function resetGame() {
   account.level = 0;
   board.reset();
   time = { start: performance.now(), elapsed: 0, level: LEVEL[account.level] };
-
 }
 
 function play() {
   addEventListener();
-  if(document.querySelector("#play-btn").style.display == ""){
+  if (document.querySelector('#play-btn').style.display == '') {
     resetGame();
   }
 
@@ -103,8 +103,8 @@ function play() {
   }
 
   animate();
-  document.querySelector("#play-btn").style.display = "none";
-  document.querySelector("#pause-btn").style.display = "block";
+  document.querySelector('#play-btn').style.display = 'none';
+  document.querySelector('#pause-btn').style.display = 'block';
 }
 
 function animate(now = 0) {
@@ -126,20 +126,23 @@ function animate(now = 0) {
 
 function gameOver() {
   cancelAnimationFrame(requestId);
+
   ctx.fillStyle = 'black';
   ctx.fillRect(1, 3, 8, 1.2);
   ctx.font = '1px Arial';
   ctx.fillStyle = 'red';
   ctx.fillText('GAME OVER', 1.8, 4);
-  resetGame();
-  document.querySelector("#pause-btn").style.display = "none";
-  document.querySelector("#play-btn").style.display = "";
+
+  checkHighScore(account.score);
+
+  document.querySelector('#pause-btn').style.display = 'none';
+  document.querySelector('#play-btn').style.display = '';
 }
 
 function pause() {
   if (!requestId) {
-    document.querySelector("#play-btn").style.display = "none";
-    document.querySelector("#pause-btn").style.display = "block";
+    document.querySelector('#play-btn').style.display = 'none';
+    document.querySelector('#pause-btn').style.display = 'block';
     animate();
     return;
   }
@@ -152,6 +155,35 @@ function pause() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'yellow';
   ctx.fillText('PAUSED', 3, 4);
-  document.querySelector("#play-btn").style.display = "block";
-  document.querySelector("#pause-btn").style.display = "none";
+  document.querySelector('#play-btn').style.display = 'block';
+  document.querySelector('#pause-btn').style.display = 'none';
+}
+
+function showHighScores() {
+  const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+  const highScoreList = document.getElementById('highScores');
+
+  highScoreList.innerHTML = highScores
+    .map((score) => `<li>${score.score} - ${score.name}`)
+    .join('');
+}
+
+function checkHighScore(score) {
+  const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+  const lowestScore = highScores[highScores.length - 1]?.score ?? 0;
+
+  if (score > lowestScore || highScores.length < NO_OF_HIGH_SCORES) {
+    const name = prompt('You got a highscore! Enter name:');
+    const newScore = { score, name };
+    saveHighScore(newScore, highScores);
+    showHighScores();
+  }
+}
+
+function saveHighScore(score, highScores) {
+  highScores.push(score);
+  highScores.sort((a, b) => b.score - a.score);
+  highScores.splice(NO_OF_HIGH_SCORES);
+
+  localStorage.setItem('highScores', JSON.stringify(highScores));
 }

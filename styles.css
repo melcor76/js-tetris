@@ -4,10 +4,15 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 320px 200px;
-  position:absolute;
-  left:50%;
+  grid-template-columns: 350px 320px 200px;
+  position: absolute;
+  left: 50%;
   transform: translate(-50%, 0);
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .right-column {
@@ -27,6 +32,6 @@
   cursor: pointer;
 }
 
-#pause-btn{
-  display:none;
+#pause-btn {
+  display: none;
 }

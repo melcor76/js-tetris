@@ -4,6 +4,7 @@ const COLS = 10;
 const ROWS = 20;
 const BLOCK_SIZE = 30;
 const LINES_PER_LEVEL = 10;
+const NO_OF_HIGH_SCORES = 10;
 const COLORS = [
   'none',
   'cyan',
@@ -28,7 +29,6 @@ const SHAPES = [
   [[7, 7, 0], [0, 7, 7], [0, 0, 0]]
 ];
 
-
 const KEY = {
   ESC: 27,
   SPACE: 32,
@@ -40,7 +40,6 @@ const KEY = {
   Q: 81
 };
 
-
 const POINTS = {
   SINGLE: 100,
   DOUBLE: 300,
@@ -49,7 +48,6 @@ const POINTS = {
   SOFT_DROP: 1,
   HARD_DROP: 2,
 };
-
 
 const LEVEL = {
   0: 800,
@@ -76,11 +74,9 @@ const LEVEL = {
   // 29+ is 20ms
 };
 
-
 const ROTATION = {
   LEFT: 'left',
   RIGHT: 'right'
 };
-
 
 [COLORS, SHAPES, KEY, POINTS, LEVEL, ROTATION].forEach(item => Object.freeze(item));
