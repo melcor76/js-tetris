@@ -56,9 +56,6 @@ function addEventListener() {
 function handleKeyPress(event) {
   if (event.keyCode === KEY.P) {
     pause();
-    if (document.querySelector('#pause-btn').style.display == 'block') {
-      return;
-    }
   }
   if (event.keyCode === KEY.ESC) {
     gameOver();
@@ -68,6 +65,12 @@ function handleKeyPress(event) {
     let p = moves[event.keyCode](board.piece);
     if (event.keyCode === KEY.SPACE) {
       // Hard drop
+      if (document.querySelector('#pause-btn').style.display === 'block') {
+          multimoveSound.play();
+      }else{
+        return;
+      }
+      
       while (board.valid(p)) {
         account.score += POINTS.HARD_DROP;
         board.piece.move(p);
@@ -75,8 +78,12 @@ function handleKeyPress(event) {
       }
       board.piece.hardDrop();
     } else if (board.valid(p)) {
+      if (document.querySelector('#pause-btn').style.display === 'block') {
+        movesSound.play();
+      }
       board.piece.move(p);
-      if (event.keyCode === KEY.DOWN) {
+      if (event.keyCode === KEY.DOWN && 
+          document.querySelector('#pause-btn').style.display === 'block') {
         account.score += POINTS.SOFT_DROP;
       }
     }
@@ -105,6 +112,7 @@ function play() {
   animate();
   document.querySelector('#play-btn').style.display = 'none';
   document.querySelector('#pause-btn').style.display = 'block';
+  backgroundSound.play();
 }
 
 function animate(now = 0) {
@@ -132,7 +140,9 @@ function gameOver() {
   ctx.font = '1px Arial';
   ctx.fillStyle = 'red';
   ctx.fillText('GAME OVER', 1.8, 4);
-
+  
+  sound.pause();
+  finishSound.play();
   checkHighScore(account.score);
 
   document.querySelector('#pause-btn').style.display = 'none';
@@ -144,6 +154,7 @@ function pause() {
     document.querySelector('#play-btn').style.display = 'none';
     document.querySelector('#pause-btn').style.display = 'block';
     animate();
+    backgroundSound.play();
     return;
   }
 
@@ -157,6 +168,7 @@ function pause() {
   ctx.fillText('PAUSED', 3, 4);
   document.querySelector('#play-btn').style.display = 'block';
   document.querySelector('#pause-btn').style.display = 'none';
+  sound.pause();
 }
 
 function showHighScores() {
