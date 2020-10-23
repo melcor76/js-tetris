@@ -35,3 +35,11 @@
 #pause-btn {
   display: none;
 }
+
+#sound-speaker{
+  font-size:30px;
+}
+
+.sound-item{
+  cursor:pointer;
+}
