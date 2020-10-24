@@ -163,7 +163,7 @@ class Board {
         : lines === 4
         ? POINTS.TETRIS
         : 0;
-
+    pointsSound.play();
     return (account.level + 1) * lineClearPoints;
   }
 }
