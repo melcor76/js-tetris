@@ -170,9 +170,9 @@ function showHighScores() {
 
 function checkHighScore(score) {
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
-  const lowestScore = highScores[highScores.length - 1]?.score ?? 0;
+  const lowestScore = highScores[NO_OF_HIGH_SCORES - 1]?.score ?? 0;
 
-  if (score > lowestScore || highScores.length < NO_OF_HIGH_SCORES) {
+  if (score > lowestScore) {
     const name = prompt('You got a highscore! Enter name:');
     const newScore = { score, name };
     saveHighScore(newScore, highScores);
