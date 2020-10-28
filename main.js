@@ -66,7 +66,7 @@ function handleKeyPress(event) {
     if (event.keyCode === KEY.SPACE) {
       // Hard drop
       if (document.querySelector('#pause-btn').style.display === 'block') {
-          multimoveSound.play();
+          dropSound.play();
       }else{
         return;
       }
