@@ -1,4 +1,8 @@
-class Board {
+import KEY, {COLS, BLOCK_SIZE, ROWS, COLORS,
+            ROTATION, POINTS, LINES_PER_LEVEL, LEVEL} from "./constants.js";
+import Piece from "./piece.js";
+import moves, {account, pointsSound, time} from "./main.js";
+export default class Board {
   constructor(ctx, ctxNext) {
     this.ctx = ctx;
     this.ctxNext = ctxNext;

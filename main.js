@@ -1,3 +1,7 @@
+import KEY, {BLOCK_SIZE, LEVEL, ROTATION, POINTS, NO_OF_HIGH_SCORES} from "./constants.js";
+import Board from "./board.js";
+import Sound from "./sound.js";
+
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 const canvasNext = document.getElementById('next');
@@ -199,3 +203,22 @@ function saveHighScore(score, highScores) {
 
   localStorage.setItem('highScores', JSON.stringify(highScores));
 }
+
+let playBtn = document.querySelector("#play-btn"),
+    pauseBtn = document.querySelector("#pause-btn");
+
+playBtn.addEventListener("click", play, false);
+pauseBtn.addEventListener("click", pause, false);
+
+let sound = new Sound(document.querySelector("#sound-div")),
+    backgroundSound =  sound.create("assets/sounds/Dungeon_Theme.mp3", "background_sound", true),
+    movesSound = sound.create("assets/sounds/moves.mp3", "moves_sound"),
+    dropSound = sound.create("assets/sounds/drop.mp3", "drop_sound"),
+    pointsSound = sound.create("assets/sounds/points.mp3", "points_sound"),
+    finishSound = sound.create("assets/sounds/finish.mp3", "finish_sound");;
+sound.muteToggle();
+sound.soundSetting();
+
+
+export default moves;
+export {account, pointsSound, time};

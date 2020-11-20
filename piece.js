@@ -1,4 +1,6 @@
-class Piece {
+import {COLORS, SHAPES} from "./constants.js";
+
+export default class Piece {
   constructor(ctx) {
     this.ctx = ctx;
     this.spawn();
