@@ -41,11 +41,18 @@
         <button id="pause-btn" class="play-button">Pause</button>
       </div>
     </div>
+    <script>
+      if(window.location.origin == "file://"){
+        let overlay = document.createElement("div");
+        overlay.classList.add("overlay");
 
-    <!-- <script type="text/javascript" src="constants.js"></script>
-    <script type="text/javascript" src="board.js"></script>
-    <script type="text/javascript" src="piece.js"></script>
-    <script type="text/javascript" src="sound.js"></script> -->
+        let p = document.createElement("p");
+        p.id = "warningMsg";
+        p.innerText = "Make sure the code runs from the server";
+        overlay.append(p);
+        document.body.append(overlay);
+      }
+    </script>
     <script type="module" src="main.js"></script>
   </body>
 </html>
