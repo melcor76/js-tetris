@@ -13,3 +13,10 @@ Tetris game in Modern JavaScript.
 - fx
 
 ![tetris picture](assets/share-image-large.png)
+
+## Course
+
+I just can't get enough of Tetris so I created an [in-detail interactive course](https://www.educative.io/courses/game-development-js-tetris) on getting started with game development and JavaScript.
+
+![image](https://user-images.githubusercontent.com/4782776/118137187-36abd880-b405-11eb-8f86-ca868880919e.png)
+
