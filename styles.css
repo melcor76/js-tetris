@@ -43,3 +43,24 @@
 .sound-item{
   cursor:pointer;
 }
+
+.overlay {
+  background-color:rgba(0, 0, 0, 0.8);
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  top:0;
+}
+
+#warningMsg {
+  position:relative;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  color:white;
+  text-align:center;
+  border:1px solid;
+  width:50%;
+  padding:10px;
+}
