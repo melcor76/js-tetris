@@ -6,7 +6,7 @@ Tetris game in Modern JavaScript.
 - [read the blog](https://michael-karen.medium.com/learning-modern-javascript-with-tetris-92d532bcd057) of how the game was made
 - [How to Save High Scores in Local Storage](https://michael-karen.medium.com/how-to-save-high-scores-in-local-storage-7860baca9d68)
 
-Check out [https://github.com/melcor76/js-breakout](js-breakout)!
+Check out [js-breakout](https://github.com/melcor76/js-breakout)!
 
 ## Features
 
