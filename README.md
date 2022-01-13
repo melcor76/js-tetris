@@ -3,8 +3,8 @@
 Tetris game in Modern JavaScript.
 
 - download and open `index.html` to play the game
-- [read the blog](https://michael-karen.medium.com/learning-modern-javascript-with-tetris-92d532bcd057) of how the game was made
-- [How to Save High Scores in Local Storage](https://michael-karen.medium.com/how-to-save-high-scores-in-local-storage-7860baca9d68)
+- [read the blog](https://michael-karen.medium.com/learning-modern-javascript-with-tetris-92d532bcd057?sk=a7c22e45395da8322fc55bf3b23a309d) of how the game was made
+- [How to Save High Scores in Local Storage](https://michael-karen.medium.com/how-to-save-high-scores-in-local-storage-7860baca9d68?sk=3027270e1025f015cb6e2fe8018b2142)
 
 Check out [js-breakout](https://github.com/melcor76/js-breakout)!
 
