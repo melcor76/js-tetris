@@ -37,15 +37,22 @@
           <span class="sound-item" id="sound-speaker"></span>
           <span class="sound-item" id="sound-description"></span>
         </div>
-        <button id="play-btn" onclick="play()" class="play-button">Play</button>
-        <button id="pause-btn" onclick="pause()" class="play-button">Pause</button>
+        <button id="play-btn" class="play-button">Play</button>
+        <button id="pause-btn" class="play-button">Pause</button>
       </div>
     </div>
+    <script>
+      if(window.location.origin == "file://"){
+        let overlay = document.createElement("div");
+        overlay.classList.add("overlay");
 
-    <script type="text/javascript" src="constants.js"></script>
-    <script type="text/javascript" src="board.js"></script>
-    <script type="text/javascript" src="piece.js"></script>
-    <script type="text/javascript" src="sound.js"></script>
-    <script type="text/javascript" src="main.js"></script>
+        let p = document.createElement("p");
+        p.id = "warningMsg";
+        p.innerText = "Make sure the code runs from the server";
+        overlay.append(p);
+        document.body.append(overlay);
+      }
+    </script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

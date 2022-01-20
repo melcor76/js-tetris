@@ -80,3 +80,9 @@ const ROTATION = {
 };
 
 [COLORS, SHAPES, KEY, POINTS, LEVEL, ROTATION].forEach(item => Object.freeze(item));
+
+export default KEY;
+export {
+        COLS, BLOCK_SIZE, ROWS, COLORS, SHAPES,
+        LEVEL, ROTATION, POINTS, LINES_PER_LEVEL, NO_OF_HIGH_SCORES
+};
